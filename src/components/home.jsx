@@ -1,5 +1,6 @@
 import {useState} from 'react';
 import MediaRow from './MediaRow';
+import SingleView from './SingleView';
 const mediaArray = [
   {
     media_id: 8,
@@ -66,6 +67,7 @@ const Home = () => {
           ))}
         </tbody>
       </table>
+      <SingleView item={selectedItem} setSelectedItem={setSelectedItem} />
     </>
   );
 };
