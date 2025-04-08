@@ -1,17 +1,23 @@
+import {BrowserRouter, Route, Routes} from 'react-router';
 import './App.css';
-import Greeting from './Greeting';
-import Home from './components/home';
+import Home from './views/home';
+import Layout from './components/Layout';
+import Profile from './views/profile';
+import Upload from './views/upload';
+import Single from './views/single';
 
-// react komponentin voi luoda usealla tavalla
-// const App = function() {
-// const App = () => {
 function App() {
   return (
-    <>
-      <h1>My App</h1>
-      <Greeting name="Pepe" />
-      <Home />
-    </>
+    <BrowserRouter basename={import.meta.env.BASE_URL}>
+      <Routes>
+        <Route element={<Layout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/upload" element={<Upload />} />
+          <Route path="/single" element={<Single />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
