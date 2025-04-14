@@ -1,8 +1,15 @@
-// filepath: c:\Users\axela\Desktop\vscodeprojects\wsk_25_react\src\utils\fetchData.js
-export const fetchData = async (url) => {
-  const response = await fetch(url);
+const fetchData = async (url, options = {}) => {
+  // console.log('fetching data from url: ', url);
+  const response = await fetch(url, options);
+  const json = await response.json();
   if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`);
+    // console.log('json', json);
+    if (json.message) {
+      throw new Error(json.message);
+    }
+    throw new Error(`Error ${response.status} occured`);
   }
-  return response.json();
+  return json;
 };
+
+export {fetchData};
