@@ -9,11 +9,13 @@ import Logout from './views/Logout';
 import Profile from './views/Profile';
 import Single from './views/Single';
 import Upload from './views/Upload';
+import { UserProvider } from './contexts/UserContext';
 
 
 function App() {
   return (
     <BrowserRouter basename={import.meta.env.BASE_URL}>
+      <UserProvider>
       <Routes>
         <Route element={<Layout />}>
           <Route path="/profile" element={<Profile />} />
@@ -24,6 +26,7 @@ function App() {
           <Route path="/" element={<Home />} />
         </Route>
       </Routes>
+      </UserProvider>
     </BrowserRouter>
   );
 }
