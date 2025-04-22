@@ -8,7 +8,7 @@ import Login from './views/Login';
 import Logout from './views/Logout';
 import Profile from './views/Profile';
 import Single from './views/Single';
-import Upload from './views/Upload';
+import Upload from './views/upload';
 import {UserProvider} from './contexts/UserContext';
 import ProtectedRoute from './components/ProtectedRoute';
 

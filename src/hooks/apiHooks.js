@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import {useCallback, useEffect, useState} from 'react';
 
 import {fetchData} from '../utils/fetchData';
 import {uniqBy} from 'lodash';
@@ -41,7 +41,24 @@ const useMedia = () => {
     getMedia();
   }, []);
 
-  return mediaArray;
+  const postMedia = async (file, inputs, token) => {
+    const data = {
+      ...inputs,
+      ...file,
+    };
+    const fetchOptions = {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer: ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    };
+
+    return await fetchData(`${mediaApiUrl}/media`, fetchOptions);
+  };
+
+  return {mediaArray, postMedia};
 };
 
 const useAuthentication = () => {
@@ -53,16 +70,22 @@ const useAuthentication = () => {
       },
       body: JSON.stringify(inputs),
     };
-    return await fetchData(
+    const loginResult = await fetchData(
       import.meta.env.VITE_AUTH_API + '/auth/login',
       fetchOptions,
     );
+
+    console.log('loginResult', loginResult.token);
+
+    window.localStorage.setItem('token', loginResult.token);
+
+    return loginResult;
   };
 
   return {postLogin};
 };
 
-export const useUser = () => {
+const useUser = () => {
   const postUser = async (inputs) => {
     const fetchOptions = {
       method: 'POST',
@@ -77,23 +100,43 @@ export const useUser = () => {
     );
   };
 
-  const getUserByToken = async (token) => {
+  const getUserByToken = useCallback(async (token) => {
     const fetchOptions = {
       headers: {
         Authorization: 'Bearer: ' + token,
       },
     };
 
-    const userResult = await fetchData(
+    return await fetchData(
       import.meta.env.VITE_AUTH_API + '/users/token',
       fetchOptions,
     );
+  }, []);
 
-    console.log('user result', userResult);
-
-    return userResult;
-  };
   return {getUserByToken, postUser};
 };
 
-export {useMedia, useAuthentication};
+const useFile = () => {
+  const postFile = async (file, token) => {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const fetchOptions = {
+      method: 'POST',
+      headers: {
+        Authorization: 'Bearer: ' + token,
+      },
+      mode: 'cors',
+      body: formData,
+    };
+
+    return await fetchData(
+      import.meta.env.VITE_UPLOAD_SERVER + '/upload',
+      fetchOptions,
+    );
+  };
+
+  return {postFile};
+};
+
+export {useMedia, useAuthentication, useUser, useFile};
