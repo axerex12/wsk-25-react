@@ -41,24 +41,18 @@ const Upload = () => {
     <>
       <h1>Upload</h1>
       <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="title">Title</label>
-          <input
-            name="title"
-            type="text"
-            id="title"
-            onChange={handleInputChange}
-          />
-        </div>
-        <div>
-          <label htmlFor="description">Description</label>
+        <TextInput
+        label="Title"
+        name="title"
+        type="text"
+        id="title"
+        onChange={handleInputChange}/>
           <textarea
             name="description"
             rows={5}
             id="description"
             onChange={handleInputChange}
           ></textarea>
-        </div>
         <div>
           <label htmlFor="file">File</label>
           <input
