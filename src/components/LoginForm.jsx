@@ -1,10 +1,11 @@
+import {useAuthentication} from '../hooks/apiHooks';
 import useForm from '../hooks/formHooks';
-import { useUserContext } from '../hooks/contextHooks';
-import TextInput from './ui/TextInput';
+import {useNavigate} from 'react-router';
 
 // LoginForm.jsx
 const LoginForm = () => {
-  const { handleLogin } = useUserContext();
+  const {postLogin} = useAuthentication();
+  const navigate = useNavigate();
 
   const initValues = {
     username: '',
@@ -12,12 +13,12 @@ const LoginForm = () => {
   };
 
   const doLogin = async () => {
-    try {
-        await handleLogin(inputs);
-    } catch (e) {
-        alert(e.message);
-    }
-};
+    console.log('login funktiota kutsuttu');
+    console.log(inputs);
+    // TODO: add login functionalities here
+    await postLogin(inputs);
+    navigate('/');
+  };
 
   const {inputs, handleInputChange, handleSubmit} = useForm(
     doLogin,
@@ -29,23 +30,26 @@ const LoginForm = () => {
     <>
       <h1>Login</h1>
       <form onSubmit={handleSubmit}>
-          <TextInput
-          label="Username"
+        <div>
+          <label htmlFor="loginuser">Username</label>
+          <input
             onChange={handleInputChange}
             autoComplete="username"
             type="text"
             id="loginuser"
             name="username"
           />
-
-          <TextInput
-          label="Password"
+        </div>
+        <div>
+          <label htmlFor="loginpassword">Password</label>
+          <input
             name="password"
             type="password"
             id="loginpassword"
             onChange={handleInputChange}
             autoComplete="current-password"
           />
+        </div>
         <button type="submit">Login</button>
       </form>
     </>

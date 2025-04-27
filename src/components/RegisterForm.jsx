@@ -1,6 +1,7 @@
 import {useUser} from '../hooks/apiHooks';
 import useForm from '../hooks/formHooks';
 
+// RegisterForm.jsx
 const RegisterForm = () => {
   const {postUser} = useUser();
 
@@ -13,9 +14,9 @@ const RegisterForm = () => {
   const doRegister = async () => {
     console.log('Register funktiota kutsuttu');
     console.log(inputs);
-    const userResult =  await postUser(inputs);
-    console.log('userResult', userResult);
-
+    // TODO: add Register functionalities here
+    const userResult = await postUser(inputs);
+    console.log(userResult);
   };
 
   const {inputs, handleInputChange, handleSubmit} = useForm(
@@ -39,6 +40,16 @@ const RegisterForm = () => {
           />
         </div>
         <div>
+          <label htmlFor="registeremail">Email</label>
+          <input
+            onChange={handleInputChange}
+            autoComplete="email"
+            type="email"
+            id="registeremail"
+            name="email"
+          />
+        </div>
+        <div>
           <label htmlFor="registerpassword">Password</label>
           <input
             name="password"
@@ -46,15 +57,6 @@ const RegisterForm = () => {
             id="registerpassword"
             onChange={handleInputChange}
             autoComplete="current-password"
-          />
-        </div>
-        <div>
-          <label htmlFor="registeremail">Email</label>
-          <input
-            name="email"
-            type="email"
-            id="registeremail"
-            onChange={handleInputChange}
           />
         </div>
         <button type="submit">Register</button>

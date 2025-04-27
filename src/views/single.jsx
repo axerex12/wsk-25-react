@@ -6,15 +6,14 @@ const Single = () => {
   const {item} = state;
   return (
     <>
-    <button onClick={() => navigate(-1)}>Go back</button>
+      <button onClick={() => navigate(-1)}>Go back</button>
       {item.media_type.includes('video') ? (
         <video src={item.filename} controls />
       ) : (
-        <img src={item.thumbnail} alt={item.title} />
+        <img src={item.filename} alt={item.title} />
       )}
       <h3>Title: {item.title}</h3>
       <p>{item.description}</p>
-
     </>
   );
 };

@@ -5,15 +5,14 @@ import RegisterForm from '../components/RegisterForm';
 const Login = () => {
   const [formToggle, setFormToggle] = useState(true);
 
-  const handleFormToggle = () => {
+  const clickHandler = () => {
     setFormToggle(!formToggle);
   };
 
   return (
     <>
       {formToggle ? <LoginForm /> : <RegisterForm />}
-      <button onClick={handleFormToggle}>
-        {' '}
+      <button onClick={clickHandler}>
         {formToggle ? 'or Register' : 'or Login'}
       </button>
     </>

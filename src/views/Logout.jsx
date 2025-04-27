@@ -1,8 +1,5 @@
-import { useUserContext } from "../hooks/contextHooks";
-
 const Logout = () => {
-  const {handleLogout} = useUserContext()
-  handleLogout();
+  // TODO: implement
   return <p>Logout page here</p>;
 };
 
