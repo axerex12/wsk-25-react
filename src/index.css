@@ -1,15 +1,15 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @layer base {
-
   :root {
-    font-family: system-ui, sans-serif;
-    line-height: 1.5;
-    font-weight: 400;
+    --color-sky-50: #dcd0ff;
+    --color-sky-950: #738698;
+
+    font-family: var(--font-sans);
 
     color-scheme: light dark;
-    color: rgba(255, 255, 255, 0.87);
-    background-color: #242424;
+    color: var(--color-sky-50);
+    background-color: var(--color-sky-950);
 
     font-synthesis: none;
     text-rendering: optimizeLegibility;
@@ -18,9 +18,7 @@
   }
 
   #root {
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 2rem;
+    max-width: var(--container-7xl);
+    padding: calc(var(--spacing) * 8);
   }
 }
-

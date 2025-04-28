@@ -1,10 +1,23 @@
-import {useCallback, useEffect, useState} from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
-import {fetchData} from '../utils/fetchData';
-import {uniqBy} from 'lodash';
+import { fetchData } from '../utils/fetchData';
+import { uniqBy } from 'lodash';
 
 const authApiUrl = import.meta.env.VITE_AUTH_API;
 const mediaApiUrl = import.meta.env.VITE_MEDIA_API;
+
+
+const deleteMedia = async (id, token) => {
+  const fetchOptions = {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer: ${token}`,
+      'Content-Type': 'application/json',
+    },
+  };
+
+  return await fetchData(`${mediaApiUrl}/media/${id}`, fetchOptions);
+};
 
 const useMedia = () => {
   const [mediaArray, setMediaArray] = useState([]);
@@ -21,7 +34,7 @@ const useMedia = () => {
       );
 
       // duplikaattien poisto on tehtävänannon ulkopuolella, ei tarvitse toteuttaa
-      const userMap = userData.reduce((map, {user_id, username}) => {
+      const userMap = userData.reduce((map, { user_id, username }) => {
         map[user_id] = username;
         return map;
       }, {});
@@ -71,19 +84,7 @@ const useMedia = () => {
     return await fetchData(`${mediaApiUrl}/media/${inputs.id}`, fetchOptions);
   };
 
-  const deleteMedia = async (id, token) => {
-    const fetchOptions = {
-      method: 'DELETE',
-      headers: {
-        Authorization: `Bearer: ${token}`,
-        'Content-Type': 'application/json',
-      },
-    };
-
-    return await fetchData(`${mediaApiUrl}/media/${id}`, fetchOptions);
-  };
-
-  return {mediaArray, postMedia, deleteMedia, modifyMedia};
+  return { mediaArray, postMedia, modifyMedia };
 };
 
 const tokenExistsInLocalstorage = () => Boolean(localStorage.getItem('token'));
@@ -113,7 +114,7 @@ const useAuthentication = () => {
     return loginResult;
   };
 
-  return {postLogin, isLoggedIn};
+  return { postLogin, isLoggedIn };
 };
 
 const useUser = () => {
@@ -144,7 +145,7 @@ const useUser = () => {
     );
   }, []);
 
-  return {getUserByToken, postUser};
+  return { getUserByToken, postUser };
 };
 
 const useFile = () => {
@@ -167,7 +168,44 @@ const useFile = () => {
     );
   };
 
-  return {postFile};
+  return { postFile };
 };
 
-export {useMedia, useAuthentication, useUser, useFile};
+const useLike = () => {
+
+  const getAllLikes = async () => {
+    try {
+      return await fetchData(`${mediaApiUrl}/likes`);
+    } catch (error) {
+      console.error('Error getting all likes:', error);
+      return [];
+    }
+  };
+
+  const postLike = async (data, token) => {
+    console.log('Posting like with data:', data);
+    const fetchOptions = {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    };
+    return await fetchData(`${mediaApiUrl}/likes`, fetchOptions);
+  };
+
+  const deleteLike = async (likeId, token) => {
+    const fetchOptions = {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    return await fetchData(`${mediaApiUrl}/likes/${likeId}`, fetchOptions);
+  };
+
+  return { getAllLikes, postLike, deleteLike };
+};
+
+export { useMedia, useAuthentication, useUser, useFile, deleteMedia, useLike };
